@@ -9,9 +9,9 @@ import NewsSection from './components/NewsSection.jsx'
 import Chatbot from './components/Chatbot.jsx'
 import Toast from './components/Toast.jsx'
 
-const ISS_URL = 'http://api.open-notify.org/iss-now.json'
-const ASTROS_URL = 'http://api.open-notify.org/astros.json'
-const GNEWS_BASE = 'https://gnews.io/api/v4'
+const ISS_URL = '/api/iss'
+const ASTROS_URL = '/api/astros'
+const NEWS_URL = '/api/news'
 const GEOCODE_BASE = 'https://nominatim.openstreetmap.org/reverse'
 const MAX_POSITIONS = 15
 const MAX_SPEED_POINTS = 30
@@ -76,8 +76,6 @@ function App() {
   const [toasts, setToasts] = useState([])
   const [speedHistory, setSpeedHistory] = useState([])
   const lastGeocodeAt = useRef(0)
-
-  const gnewsKey = import.meta.env.VITE_GNEWS_KEY
 
   useEffect(() => {
     document.documentElement.dataset.theme = appState.theme
@@ -193,15 +191,10 @@ function App() {
       setNewsLoading(true)
       setNewsError('')
       try {
-        const endpoint = search ? `${GNEWS_BASE}/search` : `${GNEWS_BASE}/top-headlines`
-        const { data } = await axios.get(endpoint, {
+        const { data } = await axios.get(NEWS_URL, {
           params: {
             q: search || undefined,
             category: search ? undefined : category,
-            lang: 'en',
-            country: 'us',
-            max: 10,
-            apikey: gnewsKey,
           },
         })
         const articles = data.articles || []
@@ -216,7 +209,7 @@ function App() {
         setNewsLoading(false)
       }
     },
-    [activeCategory, gnewsKey, renderNewsGrid, showToast],
+    [activeCategory, renderNewsGrid, showToast],
   )
 
   useEffect(() => {

@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/api/iss", "destination": "/api/iss.js" },
+    { "source": "/api/astros", "destination": "/api/astros.js" },
+    { "source": "/api/news", "destination": "/api/news.js" }
+  ]
+}
